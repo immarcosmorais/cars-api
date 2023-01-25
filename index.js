@@ -1,6 +1,6 @@
 import express from "express";
 import winston from "winston";
-// import accountRouter from "./routes/accounts.js";
+import cars from "./routes/cars.js";
 import { promises as fs } from "fs";
 import cors from "cors";
 
@@ -23,23 +23,13 @@ global.logger = winston.createLogger({
 
 app.use(express.json());
 app.use(cors());
-// app.use("/account", accountRouter);
+app.use("/cars", cars);
 
 app.listen(3000, async () => {
   try {
     await readFile(global.fileName);
     logger.info(`API Started and read file ${fileName}`);
   } catch (err) {
-    const initialJson = {
-      nextId: 1,
-      accounts: [],
-    };
-    writeFile(fileName, JSON.stringify(initialJson))
-      .then(() => {
-        logger.info(`API Started and read created ${fileName}`);
-      })
-      .catch((err) => {
-        logger.error(err);
-      });
+    logger.error(err);
   }
 });
