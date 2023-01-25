@@ -19,7 +19,11 @@ router.get("/brandWithMoreModels", async (req, res, next) => {
         });
       }
     });
-    res.send(results);
+    res.send(
+      results.map(function (element) {
+        return element.brand;
+      })
+    );
   } catch (err) {
     next(err);
   }
