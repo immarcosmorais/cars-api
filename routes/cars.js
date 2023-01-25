@@ -73,7 +73,29 @@ router.get("/brandWithMoreModels/:qtd", async (req, res, next) => {
         return `${element.brand} - ${element.models.length}`;
       })
     );
-    // res.send(results);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/brandWithLessModels/:qtd", async (req, res, next) => {
+  try {
+    const data = JSON.parse(await readFile(fileName));
+    let results = [];
+    data.sort((a, b) => a.models.length - b.models.length);
+    req.params.id;
+    for (let i = 0; i < data.length; i++) {
+      if (i < req.params.qtd) {
+        results.push(data[i]);
+      } else {
+        break;
+      }
+    }
+    res.send(
+      results.map(function (element) {
+        return `${element.brand} - ${element.models.length}`;
+      })
+    );
   } catch (err) {
     next(err);
   }
