@@ -55,6 +55,30 @@ router.get("/brandWithLessModels", async (req, res, next) => {
   }
 });
 
+router.get("/brandWithMoreModels/:qtd", async (req, res, next) => {
+  try {
+    const data = JSON.parse(await readFile(fileName));
+    let results = [];
+    data.sort((a, b) => b.models.length - a.models.length);
+    req.params.id;
+    for (let i = 0; i < data.length; i++) {
+      if (i < req.params.qtd) {
+        results.push(data[i]);
+      } else {
+        break;
+      }
+    }
+    res.send(
+      results.map(function (element) {
+        return `${element.brand} - ${element.models.length}`;
+      })
+    );
+    // res.send(results);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use((err, req, res, next) => {
   logger.error(`${req.method} ${req.baseUrl} - ${err.message}`);
   res.status(400).send({ error: err.message });
