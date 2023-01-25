@@ -62,9 +62,19 @@ router.get("/brandWithMoreModels/:qtd", async (req, res, next) => {
     data.sort((a, b) => b.models.length - a.models.length);
     req.params.id;
     for (let i = 0; i < data.length; i++) {
-      if (i < req.params.qtd) {
+      if (results.length === 0) {
         results.push(data[i]);
+      } else if (
+        results[results.length - 1].models.length === data[i].models.length
+      ) {
+        let flag = results[results.length - 1].brand > data[i].brand;
+        if (flag) {
+          results[results.length - 1] = data[i];
+        }
       } else {
+        results.push(data[i]);
+      }
+      if (results.length === parseInt(req.params.qtd)) {
         break;
       }
     }
@@ -85,9 +95,19 @@ router.get("/brandWithLessModels/:qtd", async (req, res, next) => {
     data.sort((a, b) => a.models.length - b.models.length);
     req.params.id;
     for (let i = 0; i < data.length; i++) {
-      if (i < req.params.qtd) {
+      if (results.length === 0) {
         results.push(data[i]);
+      } else if (
+        results[results.length - 1].models.length === data[i].models.length
+      ) {
+        let flag = results[results.length - 1].brand > data[i].brand;
+        if (flag) {
+          results[results.length - 1] = data[i];
+        }
       } else {
+        results.push(data[i]);
+      }
+      if (results.length === parseInt(req.params.qtd)) {
         break;
       }
     }
