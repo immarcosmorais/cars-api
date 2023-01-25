@@ -3,7 +3,7 @@ const router = express.Router();
 import { promises as fs } from "fs";
 const { readFile } = fs;
 
-router.get("/brandWithMoreModels", async (req, res, next) => {
+router.get("/maisModelos", async (req, res, next) => {
   try {
     const data = JSON.parse(await readFile(fileName));
     let results = [];
@@ -29,7 +29,7 @@ router.get("/brandWithMoreModels", async (req, res, next) => {
   }
 });
 
-router.get("/brandWithLessModels", async (req, res, next) => {
+router.get("/menosModelos", async (req, res, next) => {
   try {
     const data = JSON.parse(await readFile(fileName));
     let results = [];
@@ -55,7 +55,7 @@ router.get("/brandWithLessModels", async (req, res, next) => {
   }
 });
 
-router.get("/brandWithMoreModels/:qtd", async (req, res, next) => {
+router.get("/listaMaisModelos/:qtd", async (req, res, next) => {
   try {
     const data = JSON.parse(await readFile(fileName));
     let results = [];
@@ -88,7 +88,7 @@ router.get("/brandWithMoreModels/:qtd", async (req, res, next) => {
   }
 });
 
-router.get("/brandWithLessModels/:qtd", async (req, res, next) => {
+router.get("/listaMenosModelos/:qtd", async (req, res, next) => {
   try {
     const data = JSON.parse(await readFile(fileName));
     let results = [];
@@ -116,6 +116,22 @@ router.get("/brandWithLessModels/:qtd", async (req, res, next) => {
         return `${element.brand} - ${element.models.length}`;
       })
     );
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/listaModelos", async (req, res, next) => {
+  try {
+    const data = JSON.parse(await readFile(fileName));
+    let body = req.body;
+    if (body.nomeMarca == null) {
+      throw new Error("Filds 'nomeMarca' are mandatorie.");
+    }
+    const marca = data.find(
+      (item) => item.brand.toLowerCase() == body.nomeMarca.toLowerCase()
+    );
+    res.send(marca);
   } catch (err) {
     next(err);
   }

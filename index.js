@@ -1,6 +1,6 @@
 import express from "express";
 import winston from "winston";
-import cars from "./routes/cars.js";
+import cars from "./routes/marcas.js";
 import { promises as fs } from "fs";
 import cors from "cors";
 
@@ -23,7 +23,7 @@ global.logger = winston.createLogger({
 
 app.use(express.json());
 app.use(cors());
-app.use("/cars", cars);
+app.use("/marcas", cars);
 
 app.listen(3000, async () => {
   try {
